@@ -1,0 +1,117 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #e3e3e3;
+  color: #000000;
+}
+
+nav {
+  background-color: #072755;
+  color: rgb(255, 255, 255);
+  padding: 15px;
+}
+
+nav h2 {
+  margin: 0 0 10px 0;
+}
+
+nav a {
+  color: white;
+  margin-right: 15px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: rgb(190, 190, 190);
+  text-decoration: underline;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+  margin: 30px auto;
+}
+
+.page-header {
+  margin-bottom: 20px;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+}
+
+.dashboard-grid {
+  margin-bottom: 20px;
+}
+
+.dashboard-card {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+}
+
+.dashboard-card p {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+form {
+  margin-top: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #bbb;
+  font-size: 16px;
+}
+
+button,
+.button {
+  display: inline-block;
+  background-color: #148e2a;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  text-decoration: none;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+  background-color: #1d4ed8;
+}
+
+.vehicle-item {
+  background-color: #ffffff;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #c7d2fe;
+}
+
+.vehicle-item strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.status-message {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+canvas {
+  max-width: 100%;
+}

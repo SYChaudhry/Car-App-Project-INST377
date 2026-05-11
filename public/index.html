@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gearly | Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+
+  <script defer src="/js/charts.js"></script>
+  <script defer src="/js/dashboard.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+  <nav>
+    <h2>Gearly</h2>
+    <div>
+      <a href="/">Dashboard</a>
+      <a href="/garage">Garage</a>
+      <a href="/about">About</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="page-header">
+      <h1>Vehicle Dashboard</h1>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="dashboard-card">
+        <h3>Total Vehicles</h3>
+        <p id="totalVehicles">0</p>
+      </div>
+
+      <div class="dashboard-card">
+        <h3>Highest Mileage</h3>
+        <p id="highestMileage">0 miles</p>
+      </div>
+
+      <div class="dashboard-card">
+        <h3>Maintenance Status</h3>
+        <p id="maintenanceStatus">No vehicles yet</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Saved Vehicle Information</h2>
+      <div id="dashboardVehicleList"></div>
+    </section>
+
+    <section class="card">
+      <h2>Mileage Summary Chart</h2>
+      <canvas id="dashboardMileageChart"></canvas>
+    </section>
+
+    <section class="card">
+      <h2>Recent Maintenance Overview</h2>
+      <div id="recentStatusList"></div>
+    </section>
+
+  </main>
+
+</body>
+</html>
