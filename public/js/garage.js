@@ -1,4 +1,5 @@
 let allMakes = [];
+let editingVehicleId = null;
 
 document.addEventListener("DOMContentLoaded", startGaragePage);
 
@@ -73,7 +74,7 @@ function addYearOptions() {
   }
 }
 
-// Fetch Call #1: gets saved vehicles from backend
+// gets saved vehicles from backend
 async function getVehicles() {
   const vehicleList = document.getElementById("vehicleList");
 
@@ -101,6 +102,9 @@ async function getVehicles() {
     vehicleItem.innerHTML = `
       <strong>${vehicle.year} ${vehicle.make} ${vehicle.model}</strong>
       <span>Mileage: ${Number(vehicle.mileage).toLocaleString()}</span>
+      <br>
+      <button type="button" onclick="editVehicle(${vehicle.id}, ${vehicle.year}, '${vehicle.make}', '${vehicle.model}', ${vehicle.mileage})">Edit</button>
+      <button type="button" onclick="removeVehicle(${vehicle.id})">Remove</button>
     `;
 
     vehicleList.appendChild(vehicleItem);
@@ -109,7 +113,7 @@ async function getVehicles() {
   makeGarageChart(vehicles);
 }
 
-// Fetch Call #2: saves a new vehicle to backend
+// saves or updates a vehicle
 async function saveVehicle(event) {
   event.preventDefault();
 
@@ -122,26 +126,47 @@ async function saveVehicle(event) {
     year: Number(year),
     make: make,
     model: model,
-    mileage: Number(mileage)
+    mileage: Number(mileage),
   };
 
-  const response = await fetch("/api/vehicles", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(vehicleData)
-  });
+  if (editingVehicleId) {
+    await fetch("/api/vehicles/" + editingVehicleId, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(vehicleData),
+    });
 
-  await response.json();
+    editingVehicleId = null;
 
-  Swal.fire({
-    title: "Vehicle Saved",
-    text: "Your vehicle was added successfully.",
-    icon: "success"
-  });
+    Swal.fire({
+      title: "Vehicle Updated",
+      text: "Your vehicle was updated successfully.",
+      icon: "success",
+    });
+  } else {
+    await fetch("/api/vehicles", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(vehicleData),
+    });
+
+    Swal.fire({
+      title: "Vehicle Saved",
+      text: "Your vehicle was added successfully.",
+      icon: "success",
+    });
+  }
 
   document.getElementById("vehicleForm").reset();
+
+  const saveButton = document.querySelector("#vehicleForm button");
+  if (saveButton) {
+    saveButton.textContent = "Save Vehicle";
+  }
 
   const modelOptions = document.getElementById("modelOptions");
   if (modelOptions) {
@@ -151,7 +176,33 @@ async function saveVehicle(event) {
   getVehicles();
 }
 
-// Fetch Call #3: gets all car makes from backend/NHTSA
+// puts vehicle data back into the form
+function editVehicle(id, year, make, model, mileage) {
+  editingVehicleId = id;
+
+  document.getElementById("year").value = year;
+  document.getElementById("make").value = make;
+  document.getElementById("model").value = model;
+  document.getElementById("mileage").value = mileage;
+
+  const saveButton = document.querySelector("#vehicleForm button");
+  if (saveButton) {
+    saveButton.textContent = "Update Vehicle";
+  }
+
+  window.scrollTo(0, 0);
+}
+
+// removes a vehicle
+async function removeVehicle(id) {
+  await fetch("/api/vehicles/" + id, {
+    method: "DELETE",
+  });
+
+  getVehicles();
+}
+
+// gets all car makes from backend/NHTSA
 async function getMakes() {
   const response = await fetch("/api/makes");
   const makes = await response.json();
@@ -176,8 +227,7 @@ function showMakes(makes) {
   }
 }
 
-// This checks each make against the selected year.
-// The user can still type a make even if it is not suggested.
+// checks each make against the selected year
 async function getMakesForYear() {
   const yearInput = document.getElementById("year");
 
@@ -209,7 +259,7 @@ async function getMakesForYear() {
   showMakes(makesForThatYear);
 }
 
-// Fetch Call #4: gets model suggestions based on year and make
+// gets model suggestions based on year and make
 async function getModels() {
   const yearInput = document.getElementById("year");
   const makeInput = document.getElementById("make");

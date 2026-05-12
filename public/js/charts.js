@@ -28,13 +28,13 @@ function makeGarageChart(vehicles) {
       datasets: [
         {
           label: "Mileage",
-          data: mileages
-        }
-      ]
+          data: mileages,
+        },
+      ],
     },
     options: {
-      responsive: true
-    }
+      responsive: true,
+    },
   });
 }
 
@@ -65,12 +65,59 @@ function makeDashboardChart(vehicles) {
       datasets: [
         {
           label: "Mileage",
-          data: mileages
-        }
-      ]
+          data: mileages,
+        },
+      ],
     },
     options: {
-      responsive: true
-    }
+      responsive: true,
+    },
+  });
+}
+
+let serviceChart;
+
+// Chart for service history page
+function makeServiceChart(records) {
+  const chartCanvas = document.getElementById("serviceCostChart");
+
+  if (!chartCanvas) {
+    return;
+  }
+
+  const labels = [];
+  const costs = [];
+
+  for (let i = 0; i < records.length; i++) {
+    labels.push(
+      records[i].vehicle +
+        " - " +
+        records[i].service_type +
+        " at " +
+        Number(records[i].mileage).toLocaleString() +
+        " mi",
+    );
+
+    costs.push(Number(records[i].cost));
+  }
+
+  if (serviceChart) {
+    serviceChart.destroy();
+  }
+
+  serviceChart = new Chart(chartCanvas, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Service Cost",
+          data: costs,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
   });
 }

@@ -78,6 +78,16 @@ input {
   font-size: 16px;
 }
 
+select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #bbb;
+  font-size: 16px;
+  background-color: white;
+}
+
 button,
 .button {
   display: inline-block;
