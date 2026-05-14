@@ -32,8 +32,11 @@ Create a .env file in the main project folder.
 Add the following:
 
 SUPABASE_URL=your_supabase_project_url
+
 SUPABASE_KEY=your_supabase_key
+
 GEOAPIFY_KEY=your_geoapify_key
+
 PORT=3000
 
 Make sure .env is listed in .gitignore.
