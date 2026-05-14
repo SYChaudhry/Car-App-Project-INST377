@@ -3,48 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gearly | Add Vehicle</title>
-    <link rel="stylesheet" href="/css/styles.css" />
+    <title>Gearly | Garage</title>
 
-    <script defer src="/js/charts.js"></script>
-    <script defer src="/js/garage.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/css/styles.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script defer src="/js/garage.js"></script>
   </head>
+
   <body>
     <nav>
       <h2>Gearly</h2>
+
       <div>
         <a href="/">Dashboard</a>
         <a href="/garage">Garage</a>
         <a href="/service-history">Service History</a>
+        <a href="/nearby-shops">Nearby Shops</a>
         <a href="/about">About</a>
       </div>
     </nav>
 
     <main class="container">
       <section class="page-header">
-        <h1>Add Vehicle / Garage</h1>
+        <h1>Garage</h1>
+        <p>
+          Add and manage vehicles that you want to track in Gearly.
+        </p>
       </section>
 
       <section class="card">
         <h2>Add Vehicle</h2>
 
-        <form id="vehicleForm" autocomplete="off">
+        <form id="vehicleForm">
           <label for="year">Year</label>
-          <input list="yearOptions" id="year" required />
-          <datalist id="yearOptions"></datalist>
+          <input type="number" id="year" placeholder="Example: 2020" required />
 
           <label for="make">Make</label>
-          <input list="makeOptions" id="make" required />
-          <datalist id="makeOptions"></datalist>
+          <input id="make" placeholder="Example: Honda" required />
 
           <label for="model">Model</label>
-          <input list="modelOptions" id="model" required />
-          <datalist id="modelOptions"></datalist>
+          <input id="model" placeholder="Example: Civic" required />
 
           <label for="mileage">Current Mileage</label>
-          <input type="number" id="mileage" required />
+          <input
+            type="number"
+            id="mileage"
+            placeholder="Example: 45000"
+            required
+          />
 
           <button type="submit">Save Vehicle</button>
         </form>
@@ -52,14 +58,13 @@
 
       <section class="card">
         <h2>Saved Vehicles</h2>
+        <p>
+          Vehicles you add will appear here.
+        </p>
 
-        <div id="vehicleList"></div>
-      </section>
-
-      <section class="card">
-        <h2>Vehicle Mileage Chart</h2>
-        <p>This chart compares the mileage of vehicles saved in your garage.</p>
-        <canvas id="mileageChart"></canvas>
+        <div id="vehicleList">
+          <p>No vehicles saved yet.</p>
+        </div>
       </section>
     </main>
   </body>

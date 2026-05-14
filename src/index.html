@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gearly | Dashboard</title>
+
+    <link rel="stylesheet" href="/css/styles.css" />
+
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script defer src="/js/dashboard.js"></script>
+  </head>
+
+  <body>
+    <nav>
+      <h2>Gearly</h2>
+
+      <div>
+        <a href="/">Dashboard</a>
+        <a href="/garage">Garage</a>
+        <a href="/service-history">Service History</a>
+        <a href="/nearby-shops">Nearby Shops</a>
+        <a href="/about">About</a>
+      </div>
+    </nav>
+
+    <main class="container">
+      <section class="page-header">
+        <h1>Vehicle Dashboard</h1>
+        <p>
+          Track your vehicles, monitor service history, and check important
+          maintenance or recall information in one place.
+        </p>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="dashboard-card">
+          <h2>Recent Service</h2>
+          <div id="latestServicePreview">
+            <p>No service record saved yet.</p>
+          </div>
+          <a class="button" href="/service-history">View Service History</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Saved Vehicle Information</h2>
+        <p>These are the vehicles currently saved in your Gearly garage.</p>
+
+        <div id="dashboardVehicleList">
+          <p>No vehicles loaded yet.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Maintenance Recommendations</h2>
+        <p>
+          Gearly uses your vehicle mileage to suggest basic maintenance
+          reminders.
+        </p>
+
+        <div id="maintenanceList">
+          <p>No maintenance recommendations available yet.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Recall Check</h2>
+        <p>Gearly checks saved vehicles against NHTSA recall data.</p>
+
+        <div id="recallList">
+          <p>No recall information loaded yet.</p>
+        </div>
+      </section>
+
+    </main>
+  </body>
+</html>

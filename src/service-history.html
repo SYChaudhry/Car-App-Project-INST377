@@ -4,21 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gearly | Service History</title>
-    <link rel="stylesheet" href="/css/styles.css" />
 
-    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/css/styles.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script defer src="/js/charts.js"></script>
     <script defer src="/js/service-history.js"></script>
   </head>
 
   <body>
     <nav>
       <h2>Gearly</h2>
+
       <div>
         <a href="/">Dashboard</a>
         <a href="/garage">Garage</a>
         <a href="/service-history">Service History</a>
+        <a href="/nearby-shops">Nearby Shops</a>
         <a href="/about">About</a>
       </div>
     </nav>
@@ -26,6 +26,9 @@
     <main class="container">
       <section class="page-header">
         <h1>Service History</h1>
+        <p>
+          Add and review maintenance records for vehicles saved in your garage.
+        </p>
       </section>
 
       <section class="card">
@@ -38,19 +41,32 @@
           </select>
 
           <label for="serviceType">Service Type</label>
-          <input id="serviceType" required />
+          <input id="serviceType" placeholder="Example: Oil Change" required />
 
           <label for="serviceDate">Service Date</label>
           <input type="date" id="serviceDate" required />
 
           <label for="serviceMileage">Mileage at Service</label>
-          <input type="number" id="serviceMileage" required />
+          <input
+            type="number"
+            id="serviceMileage"
+            placeholder="Example: 45000"
+            required
+          />
 
           <label for="serviceCost">Cost</label>
-          <input type="number" id="serviceCost" required />
+          <input
+            type="number"
+            id="serviceCost"
+            placeholder="Example: 65"
+            required
+          />
 
           <label for="serviceNotes">Notes</label>
-          <input id="serviceNotes" />
+          <input
+            id="serviceNotes"
+            placeholder="Example: Replaced oil and filter"
+          />
 
           <button type="submit">Add Service</button>
         </form>
@@ -58,12 +74,11 @@
 
       <section class="card">
         <h2>Service Records</h2>
-        <div id="serviceList"></div>
-      </section>
+        <p>Saved maintenance records will appear here.</p>
 
-      <section class="card">
-        <h2>Service Cost Chart</h2>
-        <canvas id="serviceCostChart"></canvas>
+        <div id="serviceList">
+          <p>No service records added yet.</p>
+        </div>
       </section>
     </main>
   </body>
