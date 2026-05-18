@@ -1,3 +1,5 @@
+/////////////////////// dashboard.js - Handles the logic for the dashboard page //////////////////////////////////
+
 document.addEventListener("DOMContentLoaded", startDashboardPage);
 
 function startDashboardPage() {
@@ -19,10 +21,10 @@ async function getDashboardVehicles() {
   recallList.innerHTML = "";
 
   if (vehicles.length === 0) {
-    dashboardVehicleList.innerHTML = "<p>No vehicles loaded yet.</p>";
+    dashboardVehicleList.innerHTML = "<p> No vehicles loaded yet. </p>";
     maintenanceList.innerHTML =
-      "<p>No maintenance recommendations available yet.</p>";
-    recallList.innerHTML = "<p>No recall information loaded yet.</p>";
+      "<p> No maintenance recommendations available yet. </p>";
+    recallList.innerHTML = "<p> No recall information loaded yet. </p>";
     return;
   }
 
@@ -50,7 +52,7 @@ function showVehicleInfo(vehicle) {
     " " +
     vehicle.model +
     "</strong>" +
-    "<span>Mileage: " +
+    "<span> Mileage: " +
     mileage +
     " miles</span>";
 
@@ -116,7 +118,7 @@ async function showRecallInfo(vehicle) {
       " " +
       vehicle.model +
       "</strong>" +
-      "<span>No recalls found.</span>";
+      "<span> No recalls found. </span>";
 
     recallList.appendChild(recallItem);
     return;
@@ -130,9 +132,9 @@ async function showRecallInfo(vehicle) {
     " " +
     vehicle.model +
     "</strong>" +
-    "<span>" +
+    "<span> " +
     recallData.results.length +
-    " recall(s) found.</span>";
+    " recall(s) found. </span>";
 
   for (let i = 0; i < recallData.results.length; i++) {
     const recall = recallData.results[i];
@@ -164,7 +166,7 @@ async function getDashboardServiceHistory() {
   const records = await response.json();
 
   if (records.length === 0) {
-    latestServicePreview.innerHTML = "<p>No service record saved yet.</p>";
+    latestServicePreview.innerHTML = "<p> No service record saved yet. </p>";
     return;
   }
 

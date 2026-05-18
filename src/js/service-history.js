@@ -1,6 +1,10 @@
+////////////////////// service-history.js - Handles the logic for the service history page ////////////////////////////////
+
 let editingServiceId = null;
 
 document.addEventListener("DOMContentLoaded", startPage);
+
+
 
 function startPage() {
   const form = document.getElementById("serviceForm");
@@ -10,6 +14,8 @@ function startPage() {
   loadVehicles();
   loadServices();
 }
+
+
 
 async function loadVehicles() {
   const vehicleSelect = document.getElementById("serviceVehicle");
@@ -38,6 +44,8 @@ async function loadVehicles() {
   }
 }
 
+
+
 async function loadServices() {
   const serviceList = document.getElementById("serviceList");
 
@@ -47,7 +55,7 @@ async function loadServices() {
   serviceList.innerHTML = "";
 
   if (records.length === 0) {
-    serviceList.innerHTML = "<p>No service records added yet.</p>";
+    serviceList.innerHTML = "<p> No service records added yet. </p>";
     return;
   }
 
@@ -55,6 +63,8 @@ async function loadServices() {
     addServiceToPage(records[i]);
   }
 }
+
+
 
 function addServiceToPage(record) {
   const serviceList = document.getElementById("serviceList");
@@ -73,21 +83,21 @@ function addServiceToPage(record) {
     "<strong>" +
     record.vehicle +
     "</strong>" +
-    "<span>Service: " +
+    "<span> Service: " +
     record.service_type +
-    "</span><br>" +
-    "<span>Date: " +
+    " </span><br>" +
+    "<span> Date: " +
     record.service_date +
-    "</span><br>" +
-    "<span>Mileage: " +
+    " </span><br>" +
+    "<span> Mileage: " +
     record.mileage +
-    " miles</span><br>" +
-    "<span>Cost: $" +
+    " miles </span><br>" +
+    "<span> Cost: $" +
     record.cost +
-    "</span><br>" +
-    "<span>Notes: " +
+    " </span><br>" +
+    "<span> Notes: " +
     notes +
-    "</span>" +
+    " </span>" +
     "</div>";
 
   const editButton = document.createElement("button");
@@ -111,6 +121,8 @@ function addServiceToPage(record) {
 
   serviceList.appendChild(serviceBox);
 }
+
+
 
 async function saveService(event) {
   event.preventDefault();
@@ -175,6 +187,8 @@ async function saveService(event) {
   loadServices();
 }
 
+
+
 function editService(record) {
   editingServiceId = record.id;
 
@@ -190,6 +204,8 @@ function editService(record) {
 
   window.scrollTo(0, 0);
 }
+
+
 
 async function deleteService(id) {
   const confirmDelete = await Swal.fire({

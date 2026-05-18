@@ -1,15 +1,19 @@
+/////////////////////////// nearby-shops.js - Handles the logic for the nearby shops page //////////////////////////////////
+
 let shopMap;
 let shopMarkers = [];
 
 document.addEventListener("DOMContentLoaded", startPage);
 
+
+
 function startPage() {
   const form = document.getElementById("shopSearchForm");
-
   form.addEventListener("submit", searchShops);
-
   makeMap();
 }
+
+
 
 function makeMap() {
   shopMap = L.map("shopMap").setView([40, -75], 10);
@@ -20,6 +24,8 @@ function makeMap() {
   }).addTo(shopMap);
 }
 
+
+
 async function searchShops(event) {
   event.preventDefault();
 
@@ -28,7 +34,7 @@ async function searchShops(event) {
 
   const location = locationInput.value;
 
-  shopResults.innerHTML = "<p>Loading nearby shops...</p>";
+  shopResults.innerHTML = "<p> Loading nearby shops... </p>";
 
   clearMarkers();
 
@@ -38,7 +44,7 @@ async function searchShops(event) {
   const data = await response.json();
 
   if (!response.ok) {
-    shopResults.innerHTML = "<p>" + data.error + "</p>";
+    shopResults.innerHTML = "<p> " + data.error + " </p>";
 
     Swal.fire({
       title: "Search Failed",
@@ -64,7 +70,7 @@ async function searchShops(event) {
     "<p><strong>Search area:</strong> " + data.location + "</p>";
 
   if (!data.shops || data.shops.length === 0) {
-    shopResults.innerHTML += "<p>No nearby shops found.</p>";
+    shopResults.innerHTML += "<p> No nearby shops found. </p>";
     return;
   }
 
@@ -103,6 +109,8 @@ async function searchShops(event) {
   });
 }
 
+
+
 function addShopMarker(lat, lon, shopName, address) {
   const marker = L.marker([lat, lon]).addTo(shopMap);
 
@@ -110,6 +118,8 @@ function addShopMarker(lat, lon, shopName, address) {
 
   shopMarkers.push(marker);
 }
+
+
 
 function addShopToPage(shopName, address, category) {
   const shopResults = document.getElementById("shopResults");
@@ -121,15 +131,17 @@ function addShopToPage(shopName, address, category) {
     "<strong>" +
     shopName +
     "</strong><br>" +
-    "<span>" +
+    "<span> " +
     address +
-    "</span><br>" +
-    "<span>Category: " +
+    " </span><br>" +
+    "<span> Category: " +
     category +
-    "</span>";
+    " </span>";
 
   shopResults.appendChild(shopBox);
 }
+
+
 
 function clearMarkers() {
   for (let i = 0; i < shopMarkers.length; i++) {

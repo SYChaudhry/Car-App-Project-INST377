@@ -1,9 +1,13 @@
+// index.js - Main server file for the Car Maintenance Tracker app
+
 const express = require("express");
 require("dotenv").config();
-const { createClient } = require("@supabase/supabase-js");
 
+
+const { createClient } = require("@supabase/supabase-js");
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 
 // Connect to Supabase
 const supabase = createClient(
@@ -11,12 +15,13 @@ const supabase = createClient(
   process.env.SUPABASE_KEY,
 );
 
+
 // Middleware
 app.use(express.json());
 app.use(express.static("src"));
 
-// Page Routes
 
+// Page Routes
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/src/index.html");
 });
@@ -37,6 +42,8 @@ app.get("/about", function (req, res) {
   res.sendFile(__dirname + "/src/about.html");
 });
 
+
+
 // Vehicle API Routes
 
 // Get all vehicles
@@ -52,6 +59,7 @@ app.get("/api/vehicles", async function (req, res) {
     res.json(result.data);
   }
 });
+
 
 // Add a vehicle
 app.post("/api/vehicles", async function (req, res) {
@@ -78,6 +86,7 @@ app.post("/api/vehicles", async function (req, res) {
     res.json(result.data);
   }
 });
+
 
 // Update a vehicle
 app.put("/api/vehicles/:id", async function (req, res) {
@@ -106,6 +115,7 @@ app.put("/api/vehicles/:id", async function (req, res) {
   }
 });
 
+
 // Delete a vehicle
 app.delete("/api/vehicles/:id", async function (req, res) {
   const id = req.params.id;
@@ -118,6 +128,7 @@ app.delete("/api/vehicles/:id", async function (req, res) {
     res.json(result.data);
   }
 });
+
 
 // Service History API Routes
 
@@ -134,6 +145,8 @@ app.get("/api/service-history", async function (req, res) {
     res.json(result.data);
   }
 });
+
+
 
 // Add a service record
 app.post("/api/service-history", async function (req, res) {
@@ -164,6 +177,8 @@ app.post("/api/service-history", async function (req, res) {
     res.json(result.data);
   }
 });
+
+
 
 // Update a service record
 app.put("/api/service-history/:id", async function (req, res) {
@@ -196,6 +211,8 @@ app.put("/api/service-history/:id", async function (req, res) {
   }
 });
 
+
+
 // Delete a service record
 app.delete("/api/service-history/:id", async function (req, res) {
   const id = req.params.id;
@@ -212,6 +229,7 @@ app.delete("/api/service-history/:id", async function (req, res) {
     res.json(result.data);
   }
 });
+
 
 // Recall API Route
 
@@ -237,6 +255,7 @@ app.get("/api/recalls/:year/:make/:model", async function (req, res) {
     res.status(500).json({ error: "Could not load recall data" });
   }
 });
+
 
 // Nearby Shops API Route
 
@@ -301,6 +320,8 @@ app.get("/api/nearby-shops", async function (req, res) {
     res.status(500).json({ error: "Could not load nearby shops" });
   }
 });
+
+
 
 // Start Server
 app.listen(PORT, function () {

@@ -1,159 +1,196 @@
+///////////////// garage.js - Handles the logic for the garage page ///////////////////////
+
+let editingVehicleId = null;
+
 document.addEventListener("DOMContentLoaded", startPage);
 
 function startPage() {
+  const form = document.getElementById("vehicleForm");
+  form.addEventListener("submit", saveVehicle);
   loadVehicles();
-  loadLatestService();
 }
 
+
+
 async function loadVehicles() {
-  const dashboardVehicleList = document.getElementById("dashboardVehicleList");
-  const maintenanceList = document.getElementById("maintenanceList");
-  const recallList = document.getElementById("recallList");
+  const vehicleList = document.getElementById("vehicleList");
 
   const response = await fetch("/api/vehicles");
   const vehicles = await response.json();
 
-  dashboardVehicleList.innerHTML = "";
-  maintenanceList.innerHTML = "";
-  recallList.innerHTML = "";
+  vehicleList.innerHTML = "";
 
   if (vehicles.length === 0) {
-    dashboardVehicleList.innerHTML = "<p>No vehicles loaded yet.</p>";
-    maintenanceList.innerHTML = "<p>No maintenance recommendations yet.</p>";
-    recallList.innerHTML = "<p>No recall information yet.</p>";
+    vehicleList.innerHTML = "<p> No vehicles saved yet. </p>";
     return;
   }
 
   for (let i = 0; i < vehicles.length; i++) {
-    const vehicle = vehicles[i];
-
-    addVehicleToPage(vehicle);
-    addMaintenanceToPage(vehicle);
-    await addRecallToPage(vehicle);
+    addVehicleToPage(vehicles[i]);
   }
 }
 
+
+
 function addVehicleToPage(vehicle) {
-  const dashboardVehicleList = document.getElementById("dashboardVehicleList");
+  const vehicleList = document.getElementById("vehicleList");
 
   const vehicleBox = document.createElement("div");
   vehicleBox.className = "vehicle-item";
 
+  const mileage = Number(vehicle.mileage).toLocaleString();
+
   vehicleBox.innerHTML =
+    "<div>" +
     "<strong>" +
     vehicle.year +
     " " +
     vehicle.make +
     " " +
     vehicle.model +
-    "</strong>" +
-    "<span>Mileage: " +
-    vehicle.mileage +
-    " miles</span>";
-
-  dashboardVehicleList.appendChild(vehicleBox);
-}
-
-function addMaintenanceToPage(vehicle) {
-  const maintenanceList = document.getElementById("maintenanceList");
-
-  const maintenanceBox = document.createElement("div");
-  maintenanceBox.className = "vehicle-item";
-
-  let message = "";
-
-  if (vehicle.mileage >= 75000) {
-    message = "High mileage vehicle. Consider a full maintenance check.";
-  } else if (vehicle.mileage >= 30000) {
-    message = "Check brakes, tires, fluids, and filters.";
-  } else if (vehicle.mileage >= 5000) {
-    message = "Oil change and tire rotation may be needed soon.";
-  } else {
-    message = "Mileage is low. Keep tracking regular maintenance.";
-  }
-
-  maintenanceBox.innerHTML =
-    "<strong>" +
-    vehicle.make +
-    " " +
-    vehicle.model +
-    "</strong>" +
-    "<span>" +
-    message +
-    "</span>";
-
-  maintenanceList.appendChild(maintenanceBox);
-}
-
-async function addRecallToPage(vehicle) {
-  const recallList = document.getElementById("recallList");
-
-  const year = vehicle.year;
-  const make = encodeURIComponent(vehicle.make);
-  const model = encodeURIComponent(vehicle.model);
-
-  const response = await fetch(
-    "/api/recalls/" + year + "/" + make + "/" + model,
-  );
-  const recallData = await response.json();
-
-  const recallBox = document.createElement("div");
-  recallBox.className = "vehicle-item";
-
-  if (!recallData.results || recallData.results.length === 0) {
-    recallBox.innerHTML =
-      "<strong>" +
-      vehicle.year +
-      " " +
-      vehicle.make +
-      " " +
-      vehicle.model +
-      "</strong>" +
-      "<span>No recalls found.</span>";
-
-    recallList.appendChild(recallBox);
-    return;
-  }
-
-  recallBox.innerHTML =
-    "<strong>" +
-    vehicle.year +
-    " " +
-    vehicle.make +
-    " " +
-    vehicle.model +
-    "</strong>" +
-    "<span>" +
-    recallData.results.length +
-    " recall(s) found.</span>";
-
-  recallList.appendChild(recallBox);
-}
-
-async function loadLatestService() {
-  const latestServicePreview = document.getElementById("latestServicePreview");
-
-  const response = await fetch("/api/service-history");
-  const records = await response.json();
-
-  if (records.length === 0) {
-    latestServicePreview.innerHTML = "<p>No service record saved yet.</p>";
-    return;
-  }
-
-  const service = records[0];
-
-  latestServicePreview.innerHTML =
-    "<p>" +
-    "<strong>" +
-    service.vehicle +
     "</strong><br>" +
-    service.service_type +
-    "<br>" +
-    "Date: " +
-    service.service_date +
-    "<br>" +
-    "Cost: $" +
-    service.cost +
-    "</p>";
+    "<span> Mileage: " +
+    mileage +
+    " miles </span>" +
+    "</div>";
+
+  const editButton = document.createElement("button");
+  editButton.type = "button";
+  editButton.textContent = "Edit";
+
+  editButton.addEventListener("click", function () {
+    editVehicle(vehicle);
+  });
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.textContent = "Remove";
+
+  removeButton.addEventListener("click", function () {
+    deleteVehicle(vehicle.id);
+  });
+
+  vehicleBox.appendChild(editButton);
+  vehicleBox.appendChild(removeButton);
+
+  vehicleList.appendChild(vehicleBox);
+}
+
+
+
+async function saveVehicle(event) {
+  event.preventDefault();
+
+  const year = document.getElementById("year").value;
+  const make = document.getElementById("make").value;
+  const model = document.getElementById("model").value;
+  const mileage = document.getElementById("mileage").value;
+
+  const vehicleData = {
+    year: Number(year),
+    make: make,
+    model: model,
+    mileage: Number(mileage),
+  };
+
+  let url = "/api/vehicles";
+  let method = "POST";
+
+  if (editingVehicleId) {
+    url = "/api/vehicles/" + editingVehicleId;
+    method = "PUT";
+  }
+
+  const response = await fetch(url, {
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(vehicleData),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    Swal.fire({
+      title: "Vehicle Not Saved",
+      text: result.error,
+      icon: "error",
+    });
+
+    return;
+  }
+
+  editingVehicleId = null;
+
+  document.getElementById("vehicleForm").reset();
+
+  const saveButton = document.querySelector("#vehicleForm button");
+
+  saveButton.textContent = "Save Vehicle";
+
+  Swal.fire({
+    title: "Success",
+    text: "Vehicle saved successfully.",
+    icon: "success",
+  });
+
+  loadVehicles();
+}
+
+
+
+function editVehicle(vehicle) {
+  editingVehicleId = vehicle.id;
+
+  document.getElementById("year").value = vehicle.year;
+  document.getElementById("make").value = vehicle.make;
+  document.getElementById("model").value = vehicle.model;
+  document.getElementById("mileage").value = vehicle.mileage;
+
+  const saveButton = document.querySelector("#vehicleForm button");
+  saveButton.textContent = "Update Vehicle";
+
+  window.scrollTo(0, 0);
+}
+
+
+
+async function deleteVehicle(id) {
+  const confirmDelete = await Swal.fire({
+    title: "Remove Vehicle?",
+    text: "This vehicle will be deleted from your garage.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, remove it",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!confirmDelete.isConfirmed) {
+    return;
+  }
+
+  const response = await fetch("/api/vehicles/" + id, {
+    method: "DELETE",
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    Swal.fire({
+      title: "Vehicle Not Deleted",
+      text: result.error,
+      icon: "error",
+    });
+
+    return;
+  }
+
+  Swal.fire({
+    title: "Deleted",
+    text: "Vehicle removed successfully.",
+    icon: "success",
+  });
+
+  loadVehicles();
 }
