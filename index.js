@@ -18,7 +18,7 @@ const supabase = createClient(
 
 // Middleware
 app.use(express.json());
-app.use(express.static("src"));
+app.use(express.static(__dirname + "/src"));
 
 
 // Page Routes
